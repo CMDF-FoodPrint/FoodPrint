@@ -26,7 +26,7 @@ export default function BlogPage() {
           <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
             About
           </Link>
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          <Link href="/ingredient" className="text-green-800 hover:text-green-900 font-medium">
             Recipes
           </Link>
           <Link href="/blog" className="text-green-800 hover:text-green-900 font-medium">
