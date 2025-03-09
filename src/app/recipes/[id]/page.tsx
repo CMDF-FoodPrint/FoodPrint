@@ -38,7 +38,10 @@ export default function RecipeDetailPage({params}: { params: { id: string } }) {
         const res = await fetch(`https://api.example.com/recipes/${params.id}`);
         if (!res.ok) throw new Error("Failed to fetch recipe");
         const data = await res.json();
-        setRecipe(data);
+        setRecipe({
+            ...data,
+            steps: data.steps ?? [],
+        });
       } catch (err: any) {
         setError(err.message);
       } finally {
