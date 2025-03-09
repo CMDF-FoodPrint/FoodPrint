@@ -10,52 +10,59 @@ export default function RecipesPage() {
   const router = useRouter(); // TODO: change to before page
   const [recipes, setRecipes] = useState([]); // initialize state
   const [isLoading, setIsLoading] = useState(true);
-  // function to fetch data
-  useEffect(() => {
-    async function fetchRecipes() {
-      try {
-        // fetch data from api endpoint
-        const res = await fetch("https://api.example.com/recipes");
-        if (!res.ok) throw new Error("Failed to fetch recipes");
-        const data = await res.json();
-        setRecipes(data);
-        } catch (error) {
-            console.error("Error fetching recipes: ", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchRecipes();
-  }, []);
+  // function to fetch data (
+  // useEffect(() => {
+  //   async function fetchRecipes() {
+  //     try {
+  //       // fetch data from api endpoint
+  //       const res = await fetch("https://api.example.com/recipes");
+  //       if (!res.ok) throw new Error("Failed to fetch recipes");
+  //       const data = await res.json();
+  //       setRecipes(data);
+  //       } catch (error) {
+  //           console.error("Error fetching recipes: ", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   fetchRecipes();
+  // }, []);
+  // )
 
   // mok data
-  // const recipes = [
-  //   { id: 1, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  //   { id: 2, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  //   { id: 3, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  //   { id: 4, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  //   { id: 5, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  //   { id: 6, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  // ]
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
+  const recipe = [
+    { id: 1, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+    { id: 2, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+    { id: 3, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+    { id: 4, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+    { id: 5, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+    { id: 6, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  ]
 
   return (
     <div className="min-h-screen bg-primary p-6">
-      <header className="flex items-center justify-center relative mb-8">
+      <header className="flex items-center justify-start mb-8">
         {/* TODO: need to chage to before bage */}
-        <button onClick={() => router.push("/")} className="absolute left-0 mr-4">
-          <ArrowLeft size={48} className="text-dark" />
+        <button onClick={() => router.push("/")} className="pl-3">
+          <ArrowLeft size={55} strokeWidth={5} className="text-dark" />
         </button>
-        <h1 className="text-dark text-5xl font-bold">Recipes</h1>
+        <h1 className="text-dark text-5xl font-bold ml-4">Recipes</h1>
       </header>
 
       <div className="h-[calc(100vh-140px)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray scrollbar-track-transparent">
         <div className="space-y-4 pb-4">
           {isLoading ? (
             <p className="text-center text-gray-600 text-xl">Loading recipes...</p>
-              ) : recipes.length === 0 ? (
+              ) : recipe.length === 0 ? ( // mok
+              // ) : recipes.length === 0 ? ( // api
             <p className="text-center text-gray-600 text-xl">No Recipe!</p>
               ) : (
-            recipes.map((recipe: any) => (
+            recipe.map((recipe: any) => ( //mok
+            // recipes.map((recipe: any) => ( //api
             <div key={recipe.id} className="bg-secondary rounded-xl p-4 flex items-center">
               <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
                 <Image
@@ -78,8 +85,7 @@ export default function RecipesPage() {
                 </p>
               </div>
               {/*TODO: need to change to detail page*/}
-              {/*<button onClick={() => router.push(`/recipes/${recipe.id}`)}*/}
-              <button onClick={() => router.push("/")} className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200">
+              <button onClick={() => router.push(`/recipes/${recipe.id}`)} className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200">
                 <Search size={48} className="text-dark" />
               </button>
             </div>
