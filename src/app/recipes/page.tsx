@@ -59,8 +59,8 @@ export default function RecipesPage() {
             <div key={recipe.id} className="bg-secondary rounded-xl p-4 flex items-center">
               <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
                 <Image
-                  src={recipe.image || "/apple-pie.png"}
-                  alt={`${recipe.name} illustration`}
+                  src="/meal.png"
+                  alt="recipe illustration"
                   width={128}
                   height={128}
                   className="object-contain"
@@ -73,7 +73,9 @@ export default function RecipesPage() {
                   <span className="text-accent text-xl font-medium ml-2">{recipe.co2}</span>
                   <span className="text-dark text-xl ml-2">kg CO2e/kg</span>
                 </div>
-                <p className="text-dark text-xl mt-1">My Ingredient: {recipe.ingredient}</p>
+                <p className="text-dark text-xl mt-1">
+                  My Ingredient: {Array.isArray(recipe.ingredient) ? recipe.ingredient.join(", ") : recipe.ingredient}
+                </p>
               </div>
               {/*TODO: need to change to detail page*/}
               {/*<button onClick={() => router.push(`/recipes/${recipe.id}`)}*/}
