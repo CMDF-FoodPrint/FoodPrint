@@ -73,7 +73,9 @@ export default function RecipesPage() {
                   <span className="text-accent text-xl font-medium ml-2">{recipe.co2}</span>
                   <span className="text-dark text-xl ml-2">kg CO2e/kg</span>
                 </div>
-                <p className="text-dark text-xl mt-1">My Ingredient: {recipe.ingredient}</p>
+                <p className="text-dark text-xl mt-1">
+                  My Ingredient: {Array.isArray(recipe.ingredient) ? recipe.ingredient.join(", ") : recipe.ingredient}
+                </p>
               </div>
               {/*TODO: need to change to detail page*/}
               {/*<button onClick={() => router.push(`/recipes/${recipe.id}`)}*/}
