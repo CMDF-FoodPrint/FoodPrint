@@ -16,9 +16,11 @@ interface Ingredient {
 // Define the Recipe interface
 interface Recipe {
   node: {
-      name: string;
-      ingredients: Ingredient[];
+    name: string;
+    ingredients: Ingredient[];
+    ingredientLines: string[];
   };
+  carbonFootprints?: number[];
 }
 
 export default function IngredientPage() {
@@ -26,8 +28,7 @@ export default function IngredientPage() {
 
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
   const [newIngredient, setNewIngredient] = useState("")
-  const [recipes, setRecipes] = useState<any[]>([])
-
+  const [recipes, setRecipes] = useState<Recipe[]>([])
 
   const handleAddIngredient = () => {
     if (newIngredient.trim()) {
@@ -43,30 +44,30 @@ export default function IngredientPage() {
   }
 
   const handleFindRecipes = async () => {
-  if (ingredients.length === 0) {
-    alert("Please add at least one ingredient.");
-    return;
-  }
+    if (ingredients.length === 0) {
+      alert("Please add at least one ingredient.");
+      return;
+    }
 
     try {
       const ingredientNames = ingredients.map((ing: Ingredient) => ing.name); // Convert ingredients list to an array of names for API request
       const response = await getRecipesFromIngredients(ingredientNames);
       if (response?.searchRecipesByIngredients?.edges) {
-          const recipesWithCarbonFootprints = await Promise.all(
-              response.searchRecipesByIngredients.edges.map(async (recipe: Recipe) => {
-                  const ingredientNames = recipe.node.ingredients.map((ing: Ingredient) => ing.name);
-                  const carbonFootprints = await Promise.all(
-                      ingredientNames.map(async (ingredient: string) => {
-                          const footprint = await getCarbonFootprint(ingredient);
-                          return footprint;
-                      })
-                  );
-                  return {
-                      ...recipe,
-                      carbonFootprints,
-                  };
+        const recipesWithCarbonFootprints = await Promise.all(
+          response.searchRecipesByIngredients.edges.map(async (recipe: Recipe) => {
+            const ingredientNames = recipe.node.ingredients.map((ing: Ingredient) => ing.name);
+            const carbonFootprints = await Promise.all(
+              ingredientNames.map(async (ingredient: string) => {
+                const footprint = await getCarbonFootprint(ingredient);
+                return footprint;
               })
-          );
+            );
+            return {
+              ...recipe,
+              carbonFootprints,
+            };
+          })
+        );
         setRecipes(recipesWithCarbonFootprints);
       } else {
         console.error("Unexpected response format:", response)
@@ -75,7 +76,6 @@ export default function IngredientPage() {
       console.error("Error fetching recipes:", error)
     }
   }
-};
 
   return (
     <div className="min-h-screen bg-[#98c9a3] flex flex-col items-center py-12 px-4">
@@ -133,7 +133,7 @@ export default function IngredientPage() {
             {recipes.map((recipe, index) => (
               <div key={index} className="bg-[#bfd8bd] rounded-xl overflow-hidden p-4">
                 <h3 className="text-2xl text-[#132a13]">{recipe.node.name}</h3>
-                <p className="text-[#132a13]">Ingredients: {recipe.node.ingredients.map((ing: any) => ing.name).join(", ")}</p>
+                <p className="text-[#132a13]">Ingredients: {recipe.node.ingredients.map((ing: Ingredient) => ing.name).join(", ")}</p>
                 <p className="text-[#132a13]">{recipe.node.ingredientLines.join(", ")}</p>
                 <p>Carbon Footprints (kg CO2 per kg): {recipe.carbonFootprints ? recipe.carbonFootprints.join(", ") : "N/A"}</p>
               </div>
