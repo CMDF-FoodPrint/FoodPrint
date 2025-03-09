@@ -3,26 +3,26 @@ import { getCarbonFootprint } from "./getCarbonFromIngredients";
 
 export async function getServerSideProps(context) {
   const { ingredients } = context.query; // Get ingredients from query string
-  
+
   if (!ingredients) {
-    return { 
-      props: { 
-        recipes: [], 
-        error: 'No ingredients provided' 
-      } 
+    return {
+      props: {
+        recipes: [],
+        error: 'No ingredients provided'
+      }
     };
   }
 
   try {
     // Get the recipes based on the ingredients provided
     const response = await getRecipesFromIngredients(ingredients.split(','));
-    
+
     if (!response || !response.searchRecipesByIngredients || !response.searchRecipesByIngredients.edges) {
-      return { 
-        props: { 
-          recipes: [], 
-          error: 'No recipes found' 
-        } 
+      return {
+        props: {
+          recipes: [],
+          error: 'No recipes found'
+        }
       };
     }
 
@@ -53,8 +53,8 @@ export async function getServerSideProps(context) {
     );
 
     // Return recipes with their calculated carbon footprints as props
-    return { 
-      props: { 
+    return {
+      props: {
         recipes: recipesWithCarbonFootprints,
         error: null
       }
@@ -62,9 +62,9 @@ export async function getServerSideProps(context) {
 
   } catch (error) {
     console.error("Error fetching recipes:", error);
-    return { 
-      props: { 
-        recipes: [], 
+    return {
+      props: {
+        recipes: [],
         error: 'Failed to fetch data'
       }
     };

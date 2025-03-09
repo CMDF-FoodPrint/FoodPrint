@@ -1,9 +1,7 @@
 import { get } from 'http';
 import dotenv from 'dotenv';
 dotenv.config();
-require("dotenv").config(); 
 import Groq from "groq-sdk";
-
 
 
 const groq = new Groq({
@@ -31,7 +29,8 @@ export async function getCarbonFootprint(ingredient) {
       temperature: 0.2,
     });
 
-    return parseFloat(response.choices[0].message.content.trim());
+    const carbonFootprint = parseFloat(response.choices[0].message.content.trim());
+    return isNaN(carbonFootprint) ? null : carbonFootprint;
   } catch (error) {
     console.error(`Error getting carbon footprint for ${ingredient}:`, error);
     return null;
