@@ -3,7 +3,7 @@ import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
 import { getCarbonFootprint } from "../utils/getCarbonFootprint";
 
 export async function getServerSideProps(context) {
-  const { ingredients } = context.query; // Get ingredients from query string
+  const { ingredients } = context.query;
   
   if (!ingredients) {
     return { 
@@ -15,7 +15,6 @@ export async function getServerSideProps(context) {
   }
 
   try {
-    // Get the recipes based on the ingredients provided
     const response = await getRecipesFromIngredients(ingredients.split(','));
     
     if (!response || !response.searchRecipesByIngredients || !response.searchRecipesByIngredients.edges) {

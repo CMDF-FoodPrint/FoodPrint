@@ -32,7 +32,6 @@ const IngredientsPage = () => {
     setLoading(true);
 
     try {
-      // Fetch recipes
       const response = await getRecipesFromIngredients(ingredients);
       if (!response || !response.searchRecipesByIngredients?.edges) {
         setError("No recipes found.");

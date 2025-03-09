@@ -11,7 +11,7 @@ export default function LandingPage() {
   const router = useRouter()
   return (
     <div className="flex flex-col min-h-screen bg-[#a7c4a0]">
-      {/* Header */}
+
       <header className="w-full py-4 px-6 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <Leaf className="h-6 w-6 text-green-800" />
@@ -33,7 +33,6 @@ export default function LandingPage() {
         </nav>
       </header>
 
-      {/* Main Hero */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold mb-8 text-green-900">FoodPrint</h1>
@@ -54,7 +53,6 @@ export default function LandingPage() {
         </div>
       </main>
 
-      {/* Features Section */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -85,7 +83,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Simple Image Section */}
       <section className="py-8 px-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-8">
           <div className="md:w-1/2">
