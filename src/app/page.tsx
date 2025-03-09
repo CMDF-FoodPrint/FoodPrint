@@ -30,7 +30,7 @@ export default function LandingPage() {
           <Link href="/blog" className="text-green-800 hover:text-green-900 font-medium">
             Blog
           </Link>
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          <Link href="/contact" className="text-green-800 hover:text-green-900 font-medium">
             Contact
           </Link>
         </nav>
