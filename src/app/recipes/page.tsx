@@ -21,7 +21,8 @@ export default function RecipesPage() {
   return (
     <div className="min-h-screen bg-primary p-6">
       <header className="flex items-center justify-center relative mb-8">
-        <button className="absolute left-0 mr-4">
+        {/* TODO: need to chage to before bage */}
+        <button onClick={() => router.push("/")} className="absolute left-0 mr-4">
           <ArrowLeft size={48} className="text-dark" />
         </button>
         <h1 className="text-dark text-5xl font-bold">Recipes</h1>
@@ -49,9 +50,10 @@ export default function RecipesPage() {
                 </div>
                 <p className="text-dark text-xl mt-1">My Ingredient: {recipe.ingredient}</p>
               </div>
-              <div className="ml-auto mr-6">
+              {/*TODO: need to change to detail page*/}
+              <button onClick={() => router.push("/")} className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200">
                 <Search size={48} className="text-dark" />
-              </div>
+              </button>
             </div>
           ))}
         </div>
