@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/*import React, { useState } from "react";
 import "../styles/IngredientsPage.css";
 import "../styles/generateButton.css";
 import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
@@ -31,43 +31,6 @@ const IngredientsPage = () => {
     setError("");
     setLoading(true);
 
-    try {
-      const response = await getRecipesFromIngredients(ingredients);
-      if (!response || !response.searchRecipesByIngredients?.edges) {
-        setError("No recipes found.");
-        setRecipes([]);
-        setLoading(false);
-        return;
-      }
-
-      const recipes = response.searchRecipesByIngredients.edges;
-
-      // Fetch carbon footprints for each recipe's ingredients
-      const recipesWithCarbonFootprints = await Promise.all(
-        recipes.map(async (recipe) => {
-          const ingredientNames = recipe.node.ingredients.map((ing) => ing.name);
-          
-          const carbonFootprints = await Promise.all(
-            ingredientNames.map(async (ingredient) => {
-              const footprint = await getCarbonFootprint(ingredient);
-              return footprint;
-            })
-          );
-
-          return {
-            ...recipe,
-            carbonFootprints,
-          };
-        })
-      );
-
-      setRecipes(recipesWithCarbonFootprints);
-    } catch (error) {
-      console.error("Error fetching recipes:", error);
-      setError("Error fetching recipes.");
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -101,7 +64,7 @@ const IngredientsPage = () => {
 
       {error && <div className="error">{error}</div>}
 
-      {/* Display recipes */}
+      {/* Display recipes }
       <section className="recipes-section">
         {recipes.length > 0 ? (
           recipes.map((recipe, index) => (
@@ -110,6 +73,8 @@ const IngredientsPage = () => {
               <p>Ingredients: {recipe.node.ingredients.map((ing) => ing.name).join(", ")}</p>
               <p>Instructions: {recipe.node.ingredientLines.join(", ")}</p>
               <p>Carbon Footprints (kg CO2 per kg): {recipe.carbonFootprints.join(", ")}</p>
+              <p><strong>Total Carbon Footprint: 1 kg CO2</strong></p>
+
             </div>
           ))
         ) : (
@@ -118,6 +83,6 @@ const IngredientsPage = () => {
       </section>
     </div>
   );
-};
+}; */
 
-export default IngredientsPage;
+//export default IngredientsPage;

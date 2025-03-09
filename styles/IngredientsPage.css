@@ -79,3 +79,10 @@ section {
     display: flex;
     justify-content: space-between;
 }
+
+.recipes-section{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}

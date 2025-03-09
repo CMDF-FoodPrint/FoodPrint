@@ -4,12 +4,21 @@ import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Plus } from "lucide-react"
 import Image from "next/image"
-import { getRecipesFromIngredients } from "../../../utils/getRecipesFromIngredients"
+import { getRecipesFromIngredients } from "../../../utils/getRecipesFromIngredients";
+import { getCarbonFootprint } from "../../../utils/getCarbonFromIngredients";
 
 interface Ingredient {
   name: string
   co2: string
   calories: string
+}
+
+// Define the Recipe interface
+interface Recipe {
+  node: {
+      name: string;
+      ingredients: Ingredient[];
+  };
 }
 
 export default function IngredientPage() {
@@ -18,6 +27,7 @@ export default function IngredientPage() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
   const [newIngredient, setNewIngredient] = useState("")
   const [recipes, setRecipes] = useState<any[]>([])
+
 
   const handleAddIngredient = () => {
     if (newIngredient.trim()) {
@@ -38,21 +48,32 @@ export default function IngredientPage() {
     return;
   }
 
-  try {
-    const ingredientNames = ingredients.map((ing) => ing.name);
-    const response = await getRecipesFromIngredients(ingredientNames);
-
-
-    if (response?.searchRecipesByIngredients?.edges) {
-      const recipesList = response.searchRecipesByIngredients.edges.map(edge => edge.node);
-
-      const queryString = encodeURIComponent(JSON.stringify(ingredientNames));
-      router.push(`/recipes?ingredients=${queryString}`);
-    } else {
-      console.error("Unexpected response format:", response);
+    try {
+      const ingredientNames = ingredients.map((ing: Ingredient) => ing.name); // Convert ingredients list to an array of names for API request
+      const response = await getRecipesFromIngredients(ingredientNames);
+      if (response?.searchRecipesByIngredients?.edges) {
+          const recipesWithCarbonFootprints = await Promise.all(
+              response.searchRecipesByIngredients.edges.map(async (recipe: Recipe) => {
+                  const ingredientNames = recipe.node.ingredients.map((ing: Ingredient) => ing.name);
+                  const carbonFootprints = await Promise.all(
+                      ingredientNames.map(async (ingredient: string) => {
+                          const footprint = await getCarbonFootprint(ingredient);
+                          return footprint;
+                      })
+                  );
+                  return {
+                      ...recipe,
+                      carbonFootprints,
+                  };
+              })
+          );
+        setRecipes(recipesWithCarbonFootprints);
+      } else {
+        console.error("Unexpected response format:", response)
+      }
+    } catch (error) {
+      console.error("Error fetching recipes:", error)
     }
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
   }
 };
 
@@ -114,6 +135,7 @@ export default function IngredientPage() {
                 <h3 className="text-2xl text-[#132a13]">{recipe.node.name}</h3>
                 <p className="text-[#132a13]">Ingredients: {recipe.node.ingredients.map((ing: any) => ing.name).join(", ")}</p>
                 <p className="text-[#132a13]">{recipe.node.ingredientLines.join(", ")}</p>
+                <p>Carbon Footprints (kg CO2 per kg): {recipe.carbonFootprints ? recipe.carbonFootprints.join(", ") : "N/A"}</p>
               </div>
             ))}
           </div>

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 require("dotenv").config(); 
 import Groq from "groq-sdk";
-import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
+
 
 
 const groq = new Groq({
