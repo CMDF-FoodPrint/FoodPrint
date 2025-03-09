@@ -41,6 +41,7 @@ export default function RecipeDetailPage({params}: { params: { id: string } }) {
         setRecipe({
             ...data,
             steps: data.steps ?? [],
+            image: data.image ?? "/meal.png",
         });
       } catch (err: any) {
         setError(err.message);
