@@ -5,7 +5,6 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Leaf, UtensilsCrossed, Clock, BarChart3 } from "lucide-react"
-import IngredientsPage from "../../components/IngredientsPage";
 
 export default function LandingPage() {
   const router = useRouter()
