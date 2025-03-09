@@ -49,7 +49,7 @@ export default function RecipesPage() {
                 </div>
                 <p className="text-dark text-xl mt-1">My Ingredient: {recipe.ingredient}</p>
               </div>
-              <div className="ml-auto">
+              <div className="ml-auto mr-6">
                 <Search size={48} className="text-dark" />
               </div>
             </div>
