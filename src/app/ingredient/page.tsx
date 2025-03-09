@@ -124,23 +124,30 @@ export default function IngredientPage() {
   }
 
   const handleFindRecipes = async () => {
-    if (ingredients.length === 0) {
-      alert("Please add at least one ingredient.")
-      return
-    }
-
-    try {
-      const ingredientNames = ingredients.map((ing) => ing.name) // Convert ingredients list to an array of names for API request
-      const response = await getRecipesFromIngredients(ingredientNames)
-      if (response?.searchRecipesByIngredients?.edges) {
-        setRecipes(response.searchRecipesByIngredients.edges)
-      } else {
-        console.error("Unexpected response format:", response)
-      }
-    } catch (error) {
-      console.error("Error fetching recipes:", error)
-    }
+  if (ingredients.length === 0) {
+    alert("Please add at least one ingredient.");
+    return;
   }
+
+  try {
+    const ingredientNames = ingredients.map((ing) => ing.name);
+    const response = await getRecipesFromIngredients(ingredientNames);
+
+    console.log("🔍 API Response:", response);
+
+    if (response?.searchRecipesByIngredients?.edges) {
+      const recipesList = response.searchRecipesByIngredients.edges.map(edge => edge.node);
+      console.log("✅ Recipes fetched successfully!", recipesList);
+
+      const queryString = encodeURIComponent(JSON.stringify(ingredientNames));
+      router.push(`/recipes?ingredients=${queryString}`);
+    } else {
+      console.error("Unexpected response format:", response);
+    }
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#98c9a3] flex flex-col items-center py-12 px-4">
@@ -214,12 +221,12 @@ export default function IngredientPage() {
         Find the Best Recipe Mix
       </button>
 
-      <button
-        className="bg-[#100f0f] text-[#ffffff] text-xl font-semibold py-4 px-8 rounded-full"
-        onClick={() => router.push("/recipes")}
-      >
-        Go to Recipes Page
-      </button>
+      {/*<button*/}
+      {/*  className="bg-[#100f0f] text-[#ffffff] text-xl font-semibold py-4 px-8 rounded-full"*/}
+      {/*  onClick={() => router.push("/recipes")}*/}
+      {/*>*/}
+      {/*  Go to Recipes Page*/}
+      {/*</button>*/}
     </div>
   )
 }

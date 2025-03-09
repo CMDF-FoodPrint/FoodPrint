@@ -7,7 +7,6 @@ import {ArrowLeft} from "lucide-react"
 
 export default function RecipeDetailPage({params}: { params: { id: string } }) {
     // mok data
-    // TODO: change to real data
     // const recipe = {
     //   id: params.id,
     //   title: "Apple pie",
