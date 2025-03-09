@@ -17,7 +17,7 @@ export default function LandingPage() {
           <span className="font-bold text-xl text-green-800">FoodPrint</span>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          <Link href="/About" className="text-green-800 hover:text-green-900 font-medium">
             About
           </Link>
           <Link href="/ingredient" className="text-green-800 hover:text-green-900 font-medium">
