@@ -5,42 +5,59 @@ import { ArrowLeft, Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getRecipesFromIngredients } from "../../../utils/getRecipesFromIngredients";
+import { getCarbonFootprint } from "../../../utils/getCarbonFromIngredients";
 
 export default function RecipesPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [recipes, setRecipes] = useState<any[]>([]);
+    const [ingredients, setIngredients] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchRecipes() {
       try {
-        const queryData = searchParams.get("ingredients");
+        // const queryData = searchParams.get("ingredients");
+        const storedIngredients = localStorage.getItem("selectedIngredients");
 
-        let ingredientNames = [];
-        if (queryData) {
-          ingredientNames = JSON.parse(decodeURIComponent(queryData));
-        } else {
-          console.error("⚠ No ingredients received, cannot fetch recipes.");
-          setIsLoading(false);
-          return;
+        if (!storedIngredients) {
+            console.error("⚠ No ingredients received, cannot fetch recipes.");
+            setIsLoading(false);
+            return;
         }
 
+        const ingredientList = JSON.parse(storedIngredients);
+        setIngredients(ingredientList);
+
+        // let ingredientNames = [];
+        const ingredientNames = ingredientList.map((ing: any) => ing.name);
         const data = await getRecipesFromIngredients(ingredientNames);
-        console.log("API Response:", data);
 
         if (data?.searchRecipesByIngredients?.edges) {
-          setRecipes(
-            data.searchRecipesByIngredients.edges.map(edge => ({
-              ...edge.node,
-              totalCarbonFootprint: edge.node.totalCarbonFootprint || "0.0", // 기본값 처리
-            }))
+          const recipeWithCarbon = await Promise.all(
+              data.searchRecipesByIngredients.edges.map(async (edge) => {
+                const recipe = edge.node;
+
+                const carbonFootprint = await Promise.all(
+                    recipe.ingredients.map(async (ing: any) => {
+                      const footprint = await getCarbonFootprint(ing.name);
+                      return footprint || 0;
+                    })
+                );
+                const totalCarbonFootprint = carbonFootprint.reduce((sum, footprint) => sum + footprint, 0);
+
+                return {
+                  ...recipe,
+                  totalCarbonFootprint,
+                };
+              })
           );
+          setRecipes(recipeWithCarbon);
         } else {
-          console.error("Unexpected response format:", data);
+            console.error("Unexpected data format: ", data);
         }
       } catch (error) {
-        console.error("Error fetching recipes:", error);
+        console.error("❌ Error fetching recipes:", error);
       } finally {
         setIsLoading(false);
       }
@@ -83,7 +100,7 @@ export default function RecipesPage() {
                   </p>
                   <p className="text-dark text-xl font-semibold mt-1">
                     🌱 Total Carbon:
-                    <span className="text-green-600 text-2xl font-bold"> {recipe.totalCarbonFootprint} </span>
+                    <span className="text-green-600 text-2xl font-bold"> {recipe.totalCarbonFootprint.toFixed(2)} </span>
                     <span className="text-dark text-lg"> kg CO2e/kg</span>
                   </p>
                 </div>

@@ -1,13 +1,13 @@
 import { get } from 'http';
 import dotenv from 'dotenv';
 dotenv.config();
-require("dotenv").config(); 
+// require("dotenv").config();
 import Groq from "groq-sdk";
-import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
 
 
 const groq = new Groq({
     apiKey: process.env.NEXT_PUBLIC_GROQ_API_KEY,
+    // apiKey: process.env.GROQ_API_KEY,
     dangerouslyAllowBrowser: true,
   });
 
@@ -31,7 +31,8 @@ export async function getCarbonFootprint(ingredient) {
       temperature: 0.2,
     });
 
-    return parseFloat(response.choices[0].message.content.trim());
+    const carbonFootprint = parseFloat(response.choices[0].message.content.trim());
+    return isNaN(carbonFootprint) ? null : carbonFootprint;
   } catch (error) {
     console.error(`Error getting carbon footprint for ${ingredient}:`, error);
     return null;

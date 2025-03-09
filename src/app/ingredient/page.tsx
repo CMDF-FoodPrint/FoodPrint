@@ -1,70 +1,49 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Plus } from "lucide-react"
-import Image from "next/image"
-import { getRecipesFromIngredients } from "../../../utils/getRecipesFromIngredients"
-// add
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
+import Image from "next/image";
 import { getCarbonFootprint } from "../../../utils/getCarbonFromIngredients";
 
 interface Ingredient {
-  name: string
-  co2: string
-  calories: string
-}
-
-// add
-interface Recipe {
-  node: {
-    name: string;
-    ingredients: Ingredient[];
-  };
+  name: string;
+  co2: string;
+  calories: string;
 }
 
 export default function IngredientPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [newIngredient, setNewIngredient] = useState("");
+  const [recipes, setRecipes] = useState<any[]>([]);
 
-  const [ingredients, setIngredients] = useState<Ingredient[]>([])
-  const [newIngredient, setNewIngredient] = useState("")
-  const [recipes, setRecipes] = useState<any[]>([])
-
-  const handleAddIngredient = () => {
+  const handleAddIngredient = async () => {
     if (newIngredient.trim()) {
-      setIngredients([...ingredients, { name: newIngredient, co2: "0.12", calories: "5" }])
-      setNewIngredient("")
+      try {
+        const footprint = await getCarbonFootprint(newIngredient);
+        setIngredients([...ingredients, { name: newIngredient, co2: footprint?.toFixed(2) || "0.00", calories: "5" }]);
+        setNewIngredient("");
+      } catch (error) {
+        console.error("Error fetching carbon footprint:", error);
+      }
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleAddIngredient()
+      handleAddIngredient();
     }
-  }
+  };
 
-  const handleFindRecipes = async () => {
-  if (ingredients.length === 0) {
-    alert("Please add at least one ingredient.");
-    return;
-  }
-
-  try {
-    const ingredientNames = ingredients.map((ing) => ing.name);
-    const response = await getRecipesFromIngredients(ingredientNames);
-
-
-    if (response?.searchRecipesByIngredients?.edges) {
-      const recipesList = response.searchRecipesByIngredients.edges.map(edge => edge.node);
-
-      const queryString = encodeURIComponent(JSON.stringify(ingredientNames));
-      router.push(`/recipes?ingredients=${queryString}`);
-    } else {
-      console.error("Unexpected response format:", response);
+  const handleFindRecipes = () => {
+    if (ingredients.length === 0) {
+      alert("Please add at least one ingredient.");
+      return;
     }
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-  }
-};
+    localStorage.setItem("selectedIngredients", JSON.stringify(ingredients));
+    router.push("/recipes");
+  };
 
   return (
     <div className="min-h-screen bg-[#98c9a3] flex flex-col items-center py-12 px-4">
@@ -138,5 +117,5 @@ export default function IngredientPage() {
         Find the Best Recipe Mix
       </button>
     </div>
-  )
+  );
 }
