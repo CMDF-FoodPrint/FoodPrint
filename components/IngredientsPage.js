@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../styles/IngredientsPage.css";
 import "../styles/generateButton.css";
-
+import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
 const IngredientsPage = () => {
     const [ingredients, setIngeredients] = useState([]);
     const [input, setInput] = useState("");
+    const [recipes, setRecipes] = useState([]);
 
 
     const handleInputChange = (e) => {
@@ -18,10 +19,20 @@ const IngredientsPage = () => {
         }
     };
 
-    const handleSaveClick = () => {
-        //call query function in libs
-        window.location.href = "/next-page"; 
-    }
+    const handleSaveClick = async () => {
+        try {
+            const response = await getRecipesFromIngredients(ingredients);
+            if (response && response.searchRecipesByIngredients && response.searchRecipesByIngredients.edges) {
+                const recipes = response.searchRecipesByIngredients.edges; // Extract the edges array
+                setRecipes(recipes); // Set the fetched recipes to state
+                console.log(recipes);
+            } else {
+                console.error("Unexpected response format:", response);
+            }
+        } catch (error) {
+            console.error("Error fetching recipes:", error);
+        }
+    };
 
 
     return (
@@ -48,6 +59,15 @@ const IngredientsPage = () => {
             ))}
           </section>
           <button className="button" onClick={handleSaveClick}>
+          <section className="recipes-section">
+                {recipes.map((recipe, index) => (
+                    <div key={index} className="recipe-card">
+                        <h2>{recipe.node.name}</h2>
+                        <p>Ingredients: {recipe.node.ingredients.map(ing => ing.name).join(", ")}</p>
+                        <p>{recipe.node.ingredientLines.join(", ")}</p>
+                    </div>
+                ))}
+            </section>
           <div className="shadow"></div>
                 <div className="edge"></div>
                 <div className="front">
