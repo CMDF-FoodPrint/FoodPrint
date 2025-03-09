@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/IngredientsPage.css";
 import "../styles/generateButton.css";
-import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
+import { getRecipesFromIngredients } from "../components/getRecipesFromIngredients";
 const IngredientsPage = () => {
     const [ingredients, setIngeredients] = useState([]);
     const [input, setInput] = useState("");
@@ -50,7 +50,7 @@ const IngredientsPage = () => {
             {ingredients.map((ingredient, index) => (
                 <div key={index} className="card">
                     <div className="card-content">
-                        <img src={"/red-apple-transparent-png.webp"} alt="apple" style={{ width: '30px', height: '30px' }}/>      
+                        <img src={"/red-apple-transparent-png.webp"} alt="apple" style={{ width: '30px', height: '30px' }}/>
                         <div className="card-top">
                             {ingredient}
                         </div>
@@ -77,5 +77,5 @@ const IngredientsPage = () => {
         </div>
     );
 };
-    
+
 export default IngredientsPage;
