@@ -1,0 +1,16 @@
+
+
+.about-container {
+    background-color: #75C075;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.about-container img {
+    height: auto;
+    margin-top: 20px;
+}
