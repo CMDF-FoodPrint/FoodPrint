@@ -5,7 +5,6 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Leaf, UtensilsCrossed, Clock, BarChart3 } from "lucide-react"
-import IngredientsPage from "../../components/IngredientsPage";
 
 export default function LandingPage() {
   const router = useRouter()
@@ -18,18 +17,17 @@ export default function LandingPage() {
           <span className="font-bold text-xl text-green-800">FoodPrint</span>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
-            About
-          </Link>
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
-            Recipes
-          </Link>
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
-            Blog
-          </Link>
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
-            Contact
-          </Link>
+        <Link href="/About" className="text-green-800 hover:text-green-900 font-medium">
+          About</Link>
+        <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          Recipes
+        </Link>
+        <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          Blog
+        </Link>
+        <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          Contact
+        </Link>
         </nav>
       </header>
 
