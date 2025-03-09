@@ -20,7 +20,6 @@ export default function RecipesPage() {
         let ingredientNames = [];
         if (queryData) {
           ingredientNames = JSON.parse(decodeURIComponent(queryData));
-          console.log("📥 Received Ingredients from URL:", ingredientNames);
         } else {
           console.error("⚠ No ingredients received, cannot fetch recipes.");
           setIsLoading(false);

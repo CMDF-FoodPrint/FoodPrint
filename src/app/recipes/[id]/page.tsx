@@ -16,7 +16,6 @@ export default function RecipeDetailPage() {
     if (queryData) {
       try {
         const parsedRecipe = JSON.parse(decodeURIComponent(queryData));
-        console.log("📥 Received Recipe Data:", parsedRecipe);
         setRecipe(parsedRecipe);
       } catch (error) {
         console.error("❌ Error parsing recipe data:", error);
