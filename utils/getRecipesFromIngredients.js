@@ -33,31 +33,22 @@ export const getRecipesFromIngredients = async (mustIngredients) => {
   console.log("Query Variables:", variables); // Debugging
   console.log("Query Variables:", query); // Debugging
 
-  fetch("https://production.suggestic.com/graphql", {
+  const response = await fetch("https://production.suggestic.com/graphql", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Token ${apiKey}`,
+        "Content-Type": "application/json",
+        "Authorization": `Token ${apiKey}`,
     },
     body: JSON.stringify({
-      query: query,
-      variables: variables,
+        query: query,
+        variables: variables,
     }),
-  })
-    .then((res) => res.json())
-    .then((res) => console.log(res.data));
+});
 
-  
-
-//   try {
-//     const data = await request(endpoint, query, variables, {
-//       headers: {
-//         Authorization: `Token ${apiKey}`, // Corrected header format
-//       },
-//     });
-//     return data.searchRecipesByIngredients.edges;
-//   } catch (error) {
-//     console.error("Error fetching recipes:", error);
-//     throw error;
-//   }
+const data = await response.json();
+if (response.ok) {
+    return data.data; // Return the fetched data
+} else {
+    throw new Error("Failed to fetch recipes");
+}
 };

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { getRecipesFromIngredients } from "../utils/getRecipesFromIngredients";
-import { getCarbonFootprint } from "../utils/getCarbonFootprint";
+import { getCarbonFootprint } from "../utils/getCarbonFromIngredients";
 
 export async function getServerSideProps(context) {
   const { ingredients } = context.query; // Get ingredients from query string
@@ -16,7 +15,7 @@ export async function getServerSideProps(context) {
 
   try {
     // Get the recipes based on the ingredients provided
-    const response = await getRecipesFromIngredients(ingredients.split(','));
+    const response = await getRecipesFromIngredients(ingredients);
     
     if (!response || !response.searchRecipesByIngredients || !response.searchRecipesByIngredients.edges) {
       return { 
@@ -68,29 +67,3 @@ export async function getServerSideProps(context) {
     };
   }
 }
-
-const RecipePage = ({ recipes, error }) => {
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  return (
-    <div className="recipe-container">
-      <h1>Recipe Results</h1>
-      {recipes.length === 0 ? (
-        <p>No recipes available.</p>
-      ) : (
-        recipes.map((recipe, index) => (
-          <div key={index} className="recipe-card">
-            <h2>{recipe.node.name}</h2>
-            <p>Ingredients: {recipe.node.ingredients.map(ing => ing.name).join(", ")}</p>
-            <p>Ingredient Lines: {recipe.node.ingredientLines.join(", ")}</p>
-            <p>Carbon Footprints (kg CO2 per kg): {recipe.carbonFootprints.join(", ")}</p>
-          </div>
-        ))
-      )}
-    </div>
-  );
-};
-
-export default RecipePage;
