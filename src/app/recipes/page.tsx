@@ -4,19 +4,39 @@ import Image from "next/image"
 import { ArrowLeft, Search } from "lucide-react"
 // TODO: change to before page
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function RecipesPage() {
   const router = useRouter(); // TODO: change to before page
-  // Sample data to demonstrate scrolling
-  // TODO: Replace with real data
-  const recipes = [
-    { id: 1, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-    { id: 2, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-    { id: 3, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-    { id: 4, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-    { id: 5, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-    { id: 6, name: "Apple pie", ingredient: "apple", co2: "3.50" },
-  ]
+  const [recipes, setRecipes] = useState([]); // initialize state
+  const [isLoading, setIsLoading] = useState(true);
+  // function to fetch data
+  useEffect(() => {
+    async function fetchRecipes() {
+      try {
+        // fetch data from api endpoint
+        const res = await fetch("https://api.example.com/recipes");
+        if (!res.ok) throw new Error("Failed to fetch recipes");
+        const data = await res.json();
+        setRecipes(data);
+        } catch (error) {
+            console.error("Error fetching recipes: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchRecipes();
+  }, []);
+
+  // mok data
+  // const recipes = [
+  //   { id: 1, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  //   { id: 2, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  //   { id: 3, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  //   { id: 4, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  //   { id: 5, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  //   { id: 6, name: "Apple pie", ingredient: "apple", co2: "3.50" },
+  // ]
 
   return (
     <div className="min-h-screen bg-primary p-6">
@@ -30,12 +50,17 @@ export default function RecipesPage() {
 
       <div className="h-[calc(100vh-140px)] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray scrollbar-track-transparent">
         <div className="space-y-4 pb-4">
-          {recipes.map((recipe) => (
+          {isLoading ? (
+            <p className="text-center text-gray-600 text-xl">Loading recipes...</p>
+              ) : recipes.length === 0 ? (
+            <p className="text-center text-gray-600 text-xl">No Recipe!</p>
+              ) : (
+            recipes.map((recipe: any) => (
             <div key={recipe.id} className="bg-secondary rounded-xl p-4 flex items-center">
               <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
                 <Image
-                  src="/ApplePie.png?height=128&width=128"
-                  alt="Apple pie illustration"
+                  src={recipe.image || "/apple-pie.png"}
+                  alt={`${recipe.name} illustration`}
                   width={128}
                   height={128}
                   className="object-contain"
@@ -51,11 +76,13 @@ export default function RecipesPage() {
                 <p className="text-dark text-xl mt-1">My Ingredient: {recipe.ingredient}</p>
               </div>
               {/*TODO: need to change to detail page*/}
+              {/*<button onClick={() => router.push(`/recipes/${recipe.id}`)}*/}
               <button onClick={() => router.push("/")} className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200">
                 <Search size={48} className="text-dark" />
               </button>
             </div>
-          ))}
+          ))
+          )}
         </div>
       </div>
     </div>
