@@ -26,7 +26,7 @@ export async function getServerSideProps(context) {
       };
     }
 
-    const recipes = response.searchRecipesByIngredients.edges;
+    const recipes = response.searchRecipesByIngredients.edges.slice(0, 2);
 
     // For each recipe, calculate the carbon footprint for each ingredient
     const recipesWithCarbonFootprints = await Promise.all(
@@ -37,14 +37,16 @@ export async function getServerSideProps(context) {
         const carbonFootprints = await Promise.all(
           ingredientNames.map(async (ingredient) => {
             const footprint = await getCarbonFootprint(ingredient); // Fetch carbon footprint using Groq
-            return footprint; // Return the carbon footprint for each ingredient
           })
         );
 
+        //const totalCarbonFootprint = carbonFootprints.reduce((sum, footprint) => sum + footprint, 0);
+        //console.log("Total carbon footprint for recipe:", totalCarbonFootprint);
         // Return the recipe along with its ingredients' carbon footprints
         return {
           ...recipe,
-          carbonFootprints,
+            carbonFootprints,
+
         };
       })
     );

@@ -21,7 +21,7 @@ export async function getCarbonFootprint(ingredient) {
         {
           role: "system",
           content:
-            "You are an expert in food sustainability. Provide the estimated carbon footprint (in kg CO2 per kg) of an ingredient and add them all together for a total carbon for each recipe in numeric form only.",
+            "You are an expert in food sustainability. Provide the estimated carbon footprint (in kg CO2 per kg) of an ingredient in numeric form only.",
         },
         {
           role: "user",
