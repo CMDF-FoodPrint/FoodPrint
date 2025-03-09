@@ -21,6 +21,8 @@ interface Recipe {
     ingredientLines: string[];
   };
   carbonFootprints?: number[];
+  totalCarbonFootprint?: number;
+  
 }
 
 export default function IngredientPage() {
@@ -62,9 +64,11 @@ export default function IngredientPage() {
                 return footprint;
               })
             );
+            const totalCarbonFootprint = carbonFootprints.reduce((sum, footprint) => (sum || 0) + (footprint || 0), 0 as number);
             return {
               ...recipe,
               carbonFootprints,
+              totalCarbonFootprint,
             };
           })
         );
@@ -135,7 +139,8 @@ export default function IngredientPage() {
                 <h3 className="text-2xl text-[#132a13]">{recipe.node.name}</h3>
                 <p className="text-[#132a13]">Ingredients: {recipe.node.ingredients.map((ing: Ingredient) => ing.name).join(", ")}</p>
                 <p className="text-[#132a13]">{recipe.node.ingredientLines.join(", ")}</p>
-                <p>Carbon Footprints (kg CO2 per kg): {recipe.carbonFootprints ? recipe.carbonFootprints.join(", ") : "N/A"}</p>
+                <p>Total Carbon Footprint (kg CO2): {recipe.totalCarbonFootprint?.toFixed(2) || "N/A"}</p>
+
               </div>
             ))}
           </div>
