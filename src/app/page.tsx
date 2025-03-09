@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Leaf, UtensilsCrossed, Clock, BarChart3 } from "lucide-react"
 
 export default function LandingPage() {
+  const router = useRouter()
   return (
     <div className="flex flex-col min-h-screen bg-[#a7c4a0]">
       {/* Header */}
@@ -41,7 +45,9 @@ export default function LandingPage() {
             Do you want to get low carbon recipes?
           </h2>
 
-          <Button className="bg-black hover:bg-green-900 text-white rounded-md px-10 py-7 text-xl font-medium transition-all duration-300 transform hover:scale-105">
+          <Button className="bg-black hover:bg-green-900 text-white rounded-md px-10 py-7 text-xl font-medium transition-all duration-300 transform hover:scale-105"
+          onClick={() => router.push("/ingredient")}
+          >
             Get Started!
           </Button>
         </div>

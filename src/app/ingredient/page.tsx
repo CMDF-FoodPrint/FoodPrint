@@ -3,10 +3,14 @@
 import type React from "react"
 
 import { useState } from "react"
+import { useRouter} from "next/navigation";
 import { Plus } from "lucide-react"
 import Image from "next/image"
 
 export default function IngredientPage() {
+  const router = useRouter()
+
+    // mok data
   const [ingredients, setIngredients] = useState([
     { name: "apple", co2: "0.12", calories: "5" },
     { name: "apple", co2: "0.12", calories: "5" },
@@ -74,7 +78,10 @@ export default function IngredientPage() {
         </div>
       </div>
 
-      <button className="bg-[#100f0f] text-[#ffffff] text-xl font-semibold py-4 px-8 rounded-full">
+      <button
+          className="bg-[#100f0f] text-[#ffffff] text-xl font-semibold py-4 px-8 rounded-full"
+          onClick={() => router.push("/recipes")}
+      >
         Find the Best Recipe Mix
       </button>
     </div>
