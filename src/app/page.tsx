@@ -13,8 +13,12 @@ export default function LandingPage() {
 
       <header className="w-full py-4 px-6 flex items-center justify-between">
         <div className="flex items-center space-x-2">
+          <Link href="/">
           <Leaf className="h-6 w-6 text-green-800" />
+          </Link>
+          <Link href="/">
           <span className="font-bold text-xl text-green-800">FoodPrint</span>
+          </Link>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
           <Link href="/About" className="text-green-800 hover:text-green-900 font-medium">

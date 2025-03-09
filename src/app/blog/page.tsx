@@ -13,7 +13,7 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#a7c4a0]">
 
-      <header className="w-full py-4 px-6 flex items-center justify-between">
+      <header className="w-full py-4 px-6 flex items-center justify-between bg-white">
         <div className="flex items-center space-x-2">
           <Link href="/">
           <Leaf className="h-6 w-6 text-green-800" />
@@ -23,7 +23,7 @@ export default function BlogPage() {
           </Link>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
-          <Link href="#" className="text-green-800 hover:text-green-900 font-medium">
+          <Link href="/About" className="text-green-800 hover:text-green-900 font-medium">
             About
           </Link>
           <Link href="/ingredient" className="text-green-800 hover:text-green-900 font-medium">
