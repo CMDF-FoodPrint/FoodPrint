@@ -79,7 +79,10 @@ export default function RecipesPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() => router.push(`/recipes/${recipe.id}`)}
+                  onClick={() => {
+                    const encodedData = encodeURIComponent(JSON.stringify(recipe));
+                    router.push(`/recipes/${index}?data=${encodedData}`);
+                  }}
                   className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200"
                 >
                   <Search size={48} className="text-dark" />
