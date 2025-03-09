@@ -5,11 +5,21 @@ import { useRouter } from "next/navigation"
 import { Plus } from "lucide-react"
 import Image from "next/image"
 import { getRecipesFromIngredients } from "../../../utils/getRecipesFromIngredients"
+// add
+import { getCarbonFootprint } from "../../../utils/getCarbonFromIngredients";
 
 interface Ingredient {
   name: string
   co2: string
   calories: string
+}
+
+// add
+interface Recipe {
+  node: {
+    name: string;
+    ingredients: Ingredient[];
+  };
 }
 
 export default function IngredientPage() {
@@ -127,13 +137,6 @@ export default function IngredientPage() {
       >
         Find the Best Recipe Mix
       </button>
-
-      {/*<button*/}
-      {/*  className="bg-[#100f0f] text-[#ffffff] text-xl font-semibold py-4 px-8 rounded-full"*/}
-      {/*  onClick={() => router.push("/recipes")}*/}
-      {/*>*/}
-      {/*  Go to Recipes Page*/}
-      {/*</button>*/}
     </div>
   )
 }

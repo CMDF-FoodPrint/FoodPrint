@@ -30,7 +30,12 @@ export default function RecipesPage() {
         console.log("API Response:", data);
 
         if (data?.searchRecipesByIngredients?.edges) {
-          setRecipes(data.searchRecipesByIngredients.edges.map(edge => edge.node));
+          setRecipes(
+            data.searchRecipesByIngredients.edges.map(edge => ({
+              ...edge.node,
+              totalCarbonFootprint: edge.node.totalCarbonFootprint || "0.0", // 기본값 처리
+            }))
+          );
         } else {
           console.error("Unexpected response format:", data);
         }
@@ -76,12 +81,17 @@ export default function RecipesPage() {
                   <p className="text-dark text-xl mt-1">
                     Ingredients: {recipe.ingredients.map((ing: any) => ing.name).join(", ")}
                   </p>
+                  <p className="text-dark text-xl font-semibold mt-1">
+                    🌱 Total Carbon:
+                    <span className="text-green-600 text-2xl font-bold"> {recipe.totalCarbonFootprint} </span>
+                    <span className="text-dark text-lg"> kg CO2e/kg</span>
+                  </p>
                 </div>
                 <button
-                  onClick={() => {
-                    const encodedData = encodeURIComponent(JSON.stringify(recipe));
-                    router.push(`/recipes/${index}?data=${encodedData}`);
-                  }}
+                    onClick={() => {
+                      const encodedData = encodeURIComponent(JSON.stringify(recipe));
+                      router.push(`/recipes/${index}?data=${encodedData}`);
+                    }}
                   className="ml-auto mr-4 p-2 rounded-full hover:bg-gray-200"
                 >
                   <Search size={48} className="text-dark" />
