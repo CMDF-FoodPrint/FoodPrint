@@ -87,12 +87,18 @@ export default function RecipeDetailPage({params}: { params: { id: string } }) {
                                 ))}
                             </div>
 
-                            <h3 className="text-black text-4xl font-medium mb-4">Steps</h3>
-                            <ol className="text-black text-2xl list-decimal pl-8 space-y-4">
-                                {recipe.steps.map((step, index) => (
-                                    <li key={index}>{step}</li>
-                                ))}
-                            </ol>
+                            {recipe.steps && recipe.steps.length > 0 ? (
+                                <>
+                                    <h3 className="text-black text-4xl font-medium mb-4">Steps</h3>
+                                    <ol className="text-black text-2xl list-decimal pl-8 space-y-4">
+                                        {recipe.steps.map((step: string, index: number) => (
+                                            <li key={index}>{step}</li>
+                                        ))}
+                                    </ol>
+                                </>
+                            ) : (
+                                <p className="text-black text-2xl">No steps provided</p>
+                            )}
                         </div>
                     </div>
                 </div>
