@@ -8,7 +8,6 @@ const endpoint = "https://production.suggestic.com/graphql";
 const apiKey = process.env.NEXT_PUBLIC_SUGGESTIC_API_KEY;
 
 export const getRecipesFromIngredients = async (mustIngredients) => {
-    console.log("API Key:", process.env.NEXT_PUBLIC_SUGGESTIC_API_KEY);
 
     if (!apiKey) {
     throw new Error("API Key is missing. Check your .env file.");
@@ -29,10 +28,6 @@ export const getRecipesFromIngredients = async (mustIngredients) => {
 
   const variables = { mustIngredients };
 
-  console.log("API Key:", apiKey); // Debugging
-  console.log("Query Variables:", variables); // Debugging
-  console.log("Query Variables:", query); // Debugging
-
   const response = await fetch("https://production.suggestic.com/graphql", {
     method: "POST",
     headers: {
@@ -47,7 +42,7 @@ export const getRecipesFromIngredients = async (mustIngredients) => {
 
 const data = await response.json();
 if (response.ok) {
-    return data.data; // Return the fetched data
+    return data.data;
 } else {
     throw new Error("Failed to fetch recipes");
 }
